@@ -1,6 +1,5 @@
-#! /bin/sh
+#!/bin/bash
 #
-# Istio/DIND installer
 
 ISTIO_VERSION="0.2.7"
 ISTIO_ADDONS="${ISTIO_ADDONS:-}"
@@ -21,7 +20,6 @@ OS="$(uname)"
 if [ "x${OS}" = "xDarwin" ] ; then
   OSEXT="osx"
 else
-  # TODO we should check more/complain if not likely to work, etc...
   OSEXT="linux"
 fi
 
@@ -45,8 +43,8 @@ chmod +x "${INSTALL_DIR}/dind/config.sh"
 
 # Clone the k8s repo and run the dind gce script.
 echo "Downloading Kubernetes..."
-#rm -rf "${INSTALL_DIR}/kubernetes"
-#git clone "https://github.com/kubernetes/kubernetes.git" "${INSTALL_DIR}/kubernetes"
+rm -rf "${INSTALL_DIR}/kubernetes"
+git clone "https://github.com/kubernetes/kubernetes.git" "${INSTALL_DIR}/kubernetes"
 cd "${INSTALL_DIR}/kubernetes"
 time "${INSTALL_DIR}"/dind/gce-setup.sh
 
