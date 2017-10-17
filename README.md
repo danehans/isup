@@ -11,7 +11,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/my/gce/default/application/creden
 - [Docker Machine](https://docs.docker.com/machine/install-machine/).
 
 ## Deployment
-Until dind supports 1.8.x, isup will only deploy Kubernetes from source. Set environment variables to customize your Istio deployment:
+Until dind supports Kubernetes 1.8.x, isup will only deploy Kubernetes from source. Set environment variables to customize your Istio deployment:
 ```
 export ISTIO_BOOKINFO=y
 export ISTIO_ADDONS=y
@@ -86,3 +86,8 @@ curl http://localhost:32000/productpage
 Return to the dashboard to view activity.
 
 Reference the [Istio Dashboard documentation]https://istio.io/docs/tasks/telemetry/using-istio-dashboard.html) for additional details.
+
+## Uninstall
+```
+docker-machine rm -f $KUBE_DIND_VM
+```
