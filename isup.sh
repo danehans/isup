@@ -44,15 +44,15 @@ chmod +x "${INSTALL_DIR}/dind/config.sh"
 
 # Clone the k8s repo and run the dind gce script.
 echo "Downloading Kubernetes..."
-#rm -rf "${INSTALL_DIR}/kubernetes"
-#git clone "https://github.com/kubernetes/kubernetes.git" "${INSTALL_DIR}/kubernetes" && cd "${INSTALL_DIR}/kubernetes"
+rm -rf "${INSTALL_DIR}/kubernetes"
+git clone "https://github.com/kubernetes/kubernetes.git" "${INSTALL_DIR}/kubernetes"
 cd "${INSTALL_DIR}/kubernetes"
-#time "${INSTALL_DIR}"/dind/gce-setup.sh
+time "${INSTALL_DIR}"/dind/gce-setup.sh
 
 # Forward the Istio Ingress port.
-#docker-machine ssh ${KUBE_DIND_VM} \
-#               -L ${ISTIO_INGRESS_PORT}:localhost:${ISTIO_INGRESS_PORT} \
-#               -N&
+docker-machine ssh ${KUBE_DIND_VM} \
+               -L ${ISTIO_INGRESS_PORT}:localhost:${ISTIO_INGRESS_PORT} \
+               -N&
 
 # Install Istio client binary
 ISTIO_URL="https://github.com/istio/istio/releases/download/${ISTIO_VERSION}/istio-${ISTIO_VERSION}-${OSEXT}.tar.gz"
