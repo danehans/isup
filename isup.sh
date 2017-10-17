@@ -6,6 +6,9 @@ ISTIO_VERSION="0.2.7"
 ISTIO_ADDONS="${ISTIO_ADDONS:-}"
 ISTIO_BOOKINFO="${ISTIO_BOOKINFO:-}"
 export ISTIO_INGRESS_PORT=32000
+# TODO: Remove when dind supports 1.8.
+export BUILD_KUBEADM=y
+export BUILD_HYPERKUBE=y
 
 if [ $(uname) = Darwin ]; then
   readlinkf(){ perl -MCwd -e 'print Cwd::abs_path shift' "$1";}
