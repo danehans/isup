@@ -1,14 +1,14 @@
 # isup
-Deploy Istio+Kubernetes in Containers to GCE for Testing. `isup` is a tool for deploying [Istio](https://istio.io) to [Google Compute Engine](https://cloud.google.com/compute/) (GCE) using [kubeadm-dind-cluster](https://github.com/Mirantis/kubeadm-dind-cluster) (dind).
+`isup` is a tool for deploying [Kubernetes](https://kubernetes.io/) in Docker containers to [GCE](https://cloud.google.com/compute/) using [kubeadm-dind-cluster](https://github.com/Mirantis/kubeadm-dind-cluster) and running [Istio](https://istio.io/).
 
 ## Requirements
-- A GCE account: Follow the [quick-start](https://cloud.google.com/sdk/docs/quickstart-mac-os-x) guide to get your GCE developer environment setup.
-- GCE [application default credentials](https://developers.google.com/identity/protocols/application-default-credentials?hl=en_US): Export your GCE application default credentials:
+A GCE account: Follow the [quick-start](https://cloud.google.com/sdk/docs/quickstart-mac-os-x) guide to get your GCE developer environment setup.
+GCE [application default credentials](https://developers.google.com/identity/protocols/application-default-credentials?hl=en_US): Export your GCE application default credentials:
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/my/gce/default/application/credentials.json
 ```
-- kubectl: If `kubectl` client is not installed or not at least v1.8.x, then install the kubectl [client](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
-- [Docker Machine](https://docs.docker.com/machine/install-machine/).
+kubectl: If `kubectl` client is not installed or not at least v1.8.x, then install the kubectl [client](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+[Docker Machine](https://docs.docker.com/machine/install-machine/).
 
 ## Deployment
 Until dind supports Kubernetes 1.8.x, isup will only deploy Kubernetes from source. Set environment variables to customize your Istio deployment:
@@ -62,11 +62,12 @@ svc/istio-mixer     10.106.177.185   <none>        9091/TCP,9093/TCP,9094/TCP,91
 svc/istio-pilot     10.111.78.218    <none>        8080/TCP,443/TCP
 ```
 
-## Verify Bookinfo Deployment
+## Verify BookInfo Deployment
 Generate some traffic:
 ```
-curl http://localhost:32000/productpage
+watch -n1 curl http://localhost:32000/productpage
 ```
+View the BookInfo [product page](http://localhost:32000/productpage).
 
 View values for the new metric via the [Prometheus UI](http://localhost:9090/graph#%5B%7B%22range_input%22%3A%221h%22%2C%22expr%22%3A%22double_request_count%22%2C%22tab%22%3A1%7D%5D).
 
@@ -78,14 +79,9 @@ Reference the [Distributed Tracing documentation](https://istio.io/docs/tasks/te
 
 Open the Dashboard [Web UI](http://localhost:3000/dashboard/db/istio-dashboard).
 
-Generate some traffic:
-```
-curl http://localhost:32000/productpage
-```
-
 Return to the dashboard to view activity.
 
-Reference the [Istio Dashboard documentation]https://istio.io/docs/tasks/telemetry/using-istio-dashboard.html) for additional details.
+Reference the [Istio Dashboard documentation](https://istio.io/docs/tasks/telemetry/using-istio-dashboard.html) for additional details.
 
 ## Uninstall
 ```
