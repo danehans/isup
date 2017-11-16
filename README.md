@@ -8,6 +8,7 @@ GCE [application default credentials](https://developers.google.com/identity/pro
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/my/gce/default/application/credentials.json
 ```
 kubectl: If `kubectl` client is not installed or not at least v1.8.x, then install the kubectl [client](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+
 [Docker Machine](https://docs.docker.com/machine/install-machine/).
 
 ## Deployment

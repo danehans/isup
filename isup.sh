@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 
-ISTIO_VERSION="0.2.7"
+ISTIO_VERSION="0.2.12"
 ISTIO_ADDONS="${ISTIO_ADDONS:-}"
 ISTIO_BOOKINFO="${ISTIO_BOOKINFO:-}"
 export KUBE_DIND_VM="${KUBE_DIND_VM:-k8s-dind}"
@@ -42,10 +42,13 @@ chmod +x "${INSTALL_DIR}/dind/dind-cluster.sh"
 chmod +x "${INSTALL_DIR}/dind/config.sh"
 
 # Clone the k8s repo and run the dind gce script.
-echo "Downloading Kubernetes..."
+echo "Cloning Kubernetes..."
 rm -rf "${INSTALL_DIR}/kubernetes"
 git clone "https://github.com/kubernetes/kubernetes.git" "${INSTALL_DIR}/kubernetes"
 cd "${INSTALL_DIR}/kubernetes"
+
+# Run dind
+echo "Deploying Kubernetes..."
 time "${INSTALL_DIR}"/dind/gce-setup.sh
 
 # Forward the Istio Ingress port.
@@ -62,14 +65,12 @@ echo "Extracting Istio client binary"
 tar -xvf "${INSTALL_DIR}/istio-${ISTIO_VERSION}-${OSEXT}.tar.gz" -C "${INSTALL_DIR}"
 export PATH="${INSTALL_DIR}/istio-${ISTIO_VERSION}/bin:$PATH"
 
-# Deploy Istio
+# Deploy Istio using the updated manifests with NodePorts for Istio Ingress.
 echo "Deploying Istio..."
 ISTIO_AUTH_URL="https://raw.githubusercontent.com/danehans/istio/test_nodeport/install/kubernetes/istio-auth.yaml"
-# Update the manifests to use NodePorts for Istio Ingress.
-mv "${INSTALL_DIR}/istio-${ISTIO_VERSION}/install/kubernetes/istio-auth.yaml" "${INSTALL_DIR}/istio-${ISTIO_VERSION}/install/kubernetes/istio-auth.yaml.bak"
 # Deploy the istio contol plane and proxy initializer.
 kubectl apply -f "${ISTIO_AUTH_URL}"
-kubectl apply -f "${INSTALL_DIR}/istio-${ISTIO_VERSION}/install/kubernetes/istio-initializer.yaml"
+kubectl apply -f "https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/istio-initializer.yaml"
 echo "Istio deployment complete!"
 
 if [[ ${ISTIO_ADDONS} ]]; then
